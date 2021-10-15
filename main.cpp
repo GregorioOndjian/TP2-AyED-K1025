@@ -3,13 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cstring>
-
 #define LONG_NOMBRE 28
 #define LONG_APELLIDO 40
 #define LONG_PATENTE 10
 #define LONG_CALLE 25
 #define ARCHIVO_INCIDENTE "procesados.bak"
-
 using namespace std;
 
 struct Incidente
@@ -82,6 +80,7 @@ void LeerArchivoIncidentes(NodoIncidente *&nodo)
 void cargar_poliza(Asegurado &x){
     char nom[LONG_NOMBRE+1], ape[LONG_APELLIDO+1], Patente[LONG_PATENTE], Dni[8], nro_poliza[4];
 
+    // ****************************************lo del while no anda por ahora
     //strlen = para saber cuantos caracteres hay llenos dentro del char
     //atoi = convertir el char en int
 
@@ -93,7 +92,7 @@ void cargar_poliza(Asegurado &x){
     }
     strcpy(x.Nombre,nom);
     //***********************************************Despues se descomenta***********************************************
-/*
+
     cout << "Ingrese el Apellido del asegurado" << endl;
     cin>> ape;
     while(strlen(ape) > sizeof(char[LONG_APELLIDO])){
@@ -117,7 +116,7 @@ void cargar_poliza(Asegurado &x){
         cin >> Dni;
         k = strlen(Dni);
     }
-    x.Dni = atoi(Dni);*/
+    x.Dni = atoi(Dni);
     cout << "Ingrese el numero de poliza del asegurado" << endl;
     cin>> nro_poliza;
     int l = strlen(nro_poliza);
@@ -132,6 +131,7 @@ void cargar_poliza(Asegurado &x){
     cout << "Indique si el asegurado esta activo (1 = activa // 0 = no activa)" << endl;
     //1 true 0 false
     cin>> x.Activa;
+    x.CuotaAlDia = 1;
     return;
 
 }
@@ -168,6 +168,32 @@ void insertar_poliza(NodoAsegurado *&p){
 
     return;
 }
+
+
+
+void insertar_manual(NodoAsegurado *&p, Asegurado v[], int j){
+        Asegurado asegurado;
+        asegurado = v[j];
+        NodoAsegurado *nuevo= new NodoAsegurado();
+        NodoAsegurado *ultimo= NULL;
+        nuevo->Info=asegurado;
+        nuevo->sgte= NULL;
+
+        if (p!=NULL)
+        {
+            ultimo = encontrar_ultimo(p);
+            ultimo->sgte = nuevo;
+        }
+        else
+        {
+            p= nuevo;
+
+        }
+
+        return;
+
+}
+
 
 char menu(){
      cout << "1. Cargar una nueva poliza" << endl;
@@ -220,66 +246,154 @@ void descactivar_poliza(NodoAsegurado *&x, int num ){
 
 }
 
+void mostrar_asegurado(Asegurado x){
+cout << "El nombre del asegurado es "<< x.Nombre << endl;
+cout << "El Apellido del asegurado es "<< x.Apellido << endl;
+cout << "El Patente del asegurado es "<< x.Patente << endl;
+cout << "El Dni del asegurado es "<< x.Dni << endl;
+cout << "El nro de poliza del asegurado es "<< x.NumeroPoliza << endl;
+cout << "La cantidad de incidentes del asegurado es "<< x.CantidadIncidentes << endl;
+}
+
+void buscar_dni(NodoAsegurado *x, int dni){
+    int i = 0;
+    while(x && x->Info.Dni != dni && i < cantNodos(x) ) {
+        i++;
+        x = x->sgte;
+    }
+    Asegurado encontrado = x->Info;
+
+   mostrar_asegurado(encontrado);
+
+   return;
+
+}
+
+void buscar_nro_poliza(NodoAsegurado *x, int nro_p){
+    Asegurado encontrado[10];
+    int i;
+    for(int j = 0; j < cantNodos(x); j++){
+
+            i = 0;
+            if(x->Info.NumeroPoliza == nro_p){
+                encontrado[i] = x->Info ;
+
+                i++;
+
+            }
+            cout << &x << endl;
+            x = x->sgte;
+
+           //cout << encontrado[1].Nombre<< endl;
+
+    }
+
+    for(int j = 0; j <  i; j++){
+
+        mostrar_asegurado(encontrado[j]);
+    }
+
+
+   return;
+}
 
 
 int main()
 {
-//ingreso de polizas (despues se borra)
-
-
-
-//**************************************
     NodoIncidente *ListaIncidentes = NULL;
     NodoAsegurado *Lista_Asegurado = NULL;
     char elegida;
+    Asegurado v[4];
+//ingreso de polizas (despues se borra)
+strcpy(v[0].Nombre, "Juan");
+strcpy(v[0].Apellido , "Bazques");
+strcpy(v[0].Patente , "44aa4455aa");
+v[0].Dni = 44748938;
+v[0].NumeroPoliza = 4456;
+v[0].CantidadIncidentes =2;
+v[0].Activa = 1;
+v[0].CuotaAlDia = 1;
+
+strcpy(v[1].Nombre, "Pedro");
+strcpy(v[1].Apellido , "Bazques");
+strcpy(v[1].Patente , "4ee4ee55e5");
+v[1].Dni = 44567865;
+v[1].NumeroPoliza = 7898;
+v[1].CantidadIncidentes =8;
+v[1].Activa = 1;
+v[1].CuotaAlDia = 1;
+
+strcpy(v[2].Nombre, "Ulizes");
+strcpy(v[2].Apellido , "kil");
+strcpy(v[2].Patente , "456555aa44");
+v[2].Dni = 45656745;
+v[2].NumeroPoliza = 7898;
+v[2].CantidadIncidentes =7;
+v[2].Activa = 1;
+v[2].CuotaAlDia = 1;
+
+strcpy(v[3].Nombre, "Pedra");
+strcpy(v[3].Apellido , "newzle");
+strcpy(v[3].Patente , "789a7s8da9");
+v[3].Dni = 56585457;
+v[3].NumeroPoliza = 1233;
+v[3].CantidadIncidentes =02;
+v[3].Activa = 1;
+v[3].CuotaAlDia = 1;
+//**************************************
+
+
+int z, num_p, p ;
+char num[5];
+char opcion1;
+insertar_manual(Lista_Asegurado, v, 0);
+insertar_manual(Lista_Asegurado, v, 1);
+insertar_manual(Lista_Asegurado, v, 2);
+insertar_manual(Lista_Asegurado, v, 3);
     do
     {
 
     elegida = menu();
+
     switch(elegida){
 
             case '1':
-
                 insertar_poliza(Lista_Asegurado);
             break;
             case '2':
-                char num[5];
-                int num_p;
                 cout << "Ingrese el numero de poliza a desactivar/borrar" << endl;
                 cin >> num;
-                int q = strlen(num);
-                    while(q != sizeof(char[4])){
+                z = strlen(num);
+                while(z != sizeof(char[4])){
                         cout << "Por favor ingrese una poliza valida(4 digitos)" << endl;
                         cin >> num;
-                        q = strlen(num);
+                        z = strlen(num);
                 }
                 num_p = atoi(num);
                 descactivar_poliza(Lista_Asegurado, num_p);
             break;
-            /*case '3':
+            case '3':
 
+                cout << "¿Por que medio quiere buscar al asegurado?" << endl;
+                cout << "1.DNI"<< endl;
+                cout << "2.Nro de Poliza"<<endl;
+                opcion1 = getch();
+                if(opcion1 == '1' ){
+                    cout << "Indique el DNI del asegurado" << endl;
+                    cin >> p;
+                    buscar_dni(Lista_Asegurado, p);
+                }else if(opcion1 == '2') {
+                    cout << "Indique el Nro de poliza del/los asegurado/os" << endl;
+                    cin>> p;
+                    buscar_nro_poliza(Lista_Asegurado, p);
+                }
             break;
-            case '4':
-
-            break;
-
-            case '5':
-
-            break;
-            case '6':
-
-            break;
-            case '7':
-                // se actualizan el archivo usando la lista_asegurados
-            break;*/
         }
         cout << "Presione una tecla para continuar" << endl;
         getch();
         system("cls");
     } while (elegida!=27);
 
-//hola manola
+
 
 }
-    /*LeerArchivoIncidentes(ListaIncidentes);
-    MostrarIncidentes(ListaIncidentes);*/
