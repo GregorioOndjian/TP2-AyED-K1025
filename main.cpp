@@ -82,7 +82,6 @@ void LeerArchivoIncidentes(NodoIncidente *&nodo)
 void cargar_poliza(Asegurado &x){
     char nom[LONG_NOMBRE+1], ape[LONG_APELLIDO+1], Patente[LONG_PATENTE], Dni[8], nro_poliza[4];
 
-    // ****************************************lo del while no anda por ahora
     //strlen = para saber cuantos caracteres hay llenos dentro del char
     //atoi = convertir el char en int
 
