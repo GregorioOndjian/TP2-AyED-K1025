@@ -282,7 +282,7 @@ void buscar_nro_poliza(NodoAsegurado *x, int nro_p){
 
             }
             cout << &x << endl;
-            x = x->sgte;
+            x = x->sgte; //esto de ak hace que no funciona, no incrementa, no se porque
 
            //cout << encontrado[1].Nombre<< endl;
 
