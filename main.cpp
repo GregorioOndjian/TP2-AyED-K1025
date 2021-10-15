@@ -279,7 +279,7 @@ int main()
         system("cls");
     } while (elegida!=27);
 
-
+//hola manola
 
 }
     /*LeerArchivoIncidentes(ListaIncidentes);
